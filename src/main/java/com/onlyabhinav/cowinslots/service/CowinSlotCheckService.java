@@ -65,8 +65,11 @@ public class CowinSlotCheckService {
                     Session session = sessions.get(j);
                     if (session.min_age_limit == 18) {
                         //                      if(session.min_age_limit == 18 ){
-                        logger.info("PIN: {} available_capacity_dose1: {}, available_capacity: {}, isValidCentre: {}",
-                                center.pincode, session.available_capacity_dose1, session.available_capacity, isValidCentre(center, session));
+                        logger.info("PIN: {} vaccine: {} fee: {}, dose1: {}, all_slots: {}, isValid: {} centreName: {}",
+                                center.pincode, session.vaccine, center.fee_type,
+                                session.available_capacity_dose1,
+                                session.available_capacity,
+                                isValidCentre(center, session), center.name);
 
 
                         if (isValidCentre(center, session)) {
@@ -98,7 +101,12 @@ public class CowinSlotCheckService {
     }
 
     private Boolean isValidCentre(Center center, Session session) {
-        Boolean res = Integer.toString(center.pincode).startsWith("208") || Integer.toString(center.pincode).startsWith("282");
+        Boolean res = Integer.toString(center.pincode).startsWith("208") || Integer.toString(center.pincode).startsWith("28200");
+
+        if (res) {
+            //res = session.vaccine.equalsIgnoreCase("COVAXIN");
+            res = session.vaccine.equalsIgnoreCase("COVISHIELD");
+        }
 
         if (session.available_capacity_dose1 < 1)
             res = Boolean.FALSE;

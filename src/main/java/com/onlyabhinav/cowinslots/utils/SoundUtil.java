@@ -26,6 +26,11 @@ public class SoundUtil {
     @Value("${notification.sound.file}")
     private String soundFile;
 
+    public void setSoundFile(String soundFile) {
+        logger.info("sound file = {}", soundFile);
+        this.soundFile = soundFile;
+    }
+
     public static void main(String a[]) {
         new SoundUtil().playSound();
     }

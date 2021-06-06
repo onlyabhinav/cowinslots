@@ -1,5 +1,6 @@
 package com.onlyabhinav.cowinslots.jobs;
 
+import com.onlyabhinav.cowinslots.configs.AppConfig;
 import com.onlyabhinav.cowinslots.models.SlotStatus;
 import com.onlyabhinav.cowinslots.models.URLObj;
 import com.onlyabhinav.cowinslots.service.CowinSlotCheckService;
@@ -28,6 +29,9 @@ public class StartJob {
     SoundUtil soundUtil;
 
     @Autowired
+    AppConfig appConfig;
+
+    @Autowired
     private URLHelper urlHelper;
 
     @Scheduled(fixedDelay = 1000 * 5)
@@ -42,7 +46,11 @@ public class StartJob {
         List<SlotStatus> availableStatuses = vaccineService.isAvailable(urlDynamic);
 
         if (availableStatuses.size() > 0) {
+
+            logger.info("==================== A L E R T (Start) ====================");
             logger.info("{} Slots Found in City {}", availableStatuses.size(), availableStatuses.get(0).getCenter().district_name);
+
+            Boolean specialCenter = Boolean.FALSE;
 
             for (SlotStatus status : availableStatuses) {
                 String centreInfo = String.format("PIN=[%6d], [%30s] || [%20s]",
@@ -54,6 +62,19 @@ public class StartJob {
                         status.getSession().date,
                         status.getSession().available_capacity,
                         centreInfo);
+
+
+                if (status.getCenter().pincode == 282007 || status.getCenter().pincode == 282004) {
+                    specialCenter = Boolean.TRUE;
+                }
+            }
+
+            logger.info("==================== A L E R T (End) ====================");
+
+            if (specialCenter) {
+                soundUtil.setSoundFile(appConfig.getSoundFileMed());
+            } else {
+                soundUtil.setSoundFile(appConfig.getSoundFileLow());
             }
 
             soundUtil.playSound();
