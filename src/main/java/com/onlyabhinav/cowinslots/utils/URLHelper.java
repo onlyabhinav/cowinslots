@@ -34,8 +34,8 @@ public class URLHelper {
         lastUpdatedDate = getTodayDateStr();
         logger.info("LAST UPDATED DATE Set to = {}", lastUpdatedDate);
 
-        //urls.add(new URLObj(getURL("664")));
-        urls.add(new URLObj(getURL("622")));
+        urls.add(new URLObj(getURL("664")));
+        //urls.add(new URLObj(getURL("622")));
 
     }
 

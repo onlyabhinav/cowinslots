@@ -65,16 +65,17 @@ public class CowinSlotCheckService {
                     Session session = sessions.get(j);
                     if (session.min_age_limit == 18) {
                         //                      if(session.min_age_limit == 18 ){
-                        logger.info("PIN: {} vaccine: {} fee: {}, dose1: {}, all_slots: {}, isValid: {} centreName: {}",
+                        logger.info("PIN: {} vaccine: {} fee: {}, dose2: {}, all_slots: {}, isValid: {} centreName: {}",
                                 center.pincode, session.vaccine, center.fee_type,
-                                session.available_capacity_dose1,
+                                session.available_capacity_dose2,
                                 session.available_capacity,
                                 isValidCentre(center, session), center.name);
 
 
                         if (isValidCentre(center, session)) {
 
-                            if (session.available_capacity > appConfig.getMinAvailability()) {
+                            if (session.available_capacity_dose2 > appConfig.getMinAvailability() &&
+                                    center.fee_type.equalsIgnoreCase("free")) {
                                 SlotStatus availableSlot = new SlotStatus();
 
                                 availableSlot.setIsAvailable(Boolean.TRUE);
@@ -85,7 +86,7 @@ public class CowinSlotCheckService {
                                 slotStatus.add(availableSlot);
                             } else {
                                 logger.info("---------------------------------");
-                                logger.info("SKIPPING as availabilty is less {}", session.available_capacity);
+                                logger.info("SKIPPING as availabilty is less {}", session.available_capacity_dose2);
                                 logger.info("---------------------------------");
                             }
 

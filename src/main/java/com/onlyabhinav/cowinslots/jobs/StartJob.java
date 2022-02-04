@@ -52,16 +52,17 @@ public class StartJob {
 
             Boolean specialCenter = Boolean.FALSE;
 
+            StringBuilder logData = new StringBuilder();
+
             for (SlotStatus status : availableStatuses) {
-                String centreInfo = String.format("PIN=[%6d], [%30s] || [%20s]",
+                String centreInfo = String.format("Date:[%12s], Slots:[%8s], PIN=[%6d], [%30s] || [%20s]",
+                        status.getSession().date,
+                        status.getSession().available_capacity + "/" + status.getSession().available_capacity_dose1,
                         status.getCenter().pincode,
                         status.getCenter().name,
                         status.getCenter().address);
 
-                logger.info("Slot  Date::{}, Slots::{}, Centre::{},",
-                        status.getSession().date,
-                        status.getSession().available_capacity,
-                        centreInfo);
+                logData.append("\n").append(centreInfo);
 
 
                 if (status.getCenter().pincode == 282007 || status.getCenter().pincode == 282004) {
@@ -69,6 +70,7 @@ public class StartJob {
                 }
             }
 
+            logger.info(logData.toString());
             logger.info("==================== A L E R T (End) ====================");
 
             if (specialCenter) {
