@@ -13,7 +13,7 @@ import javax.annotation.PostConstruct;
 
 @Data
 @Configuration
-@PropertySource("file:D:\\Development\\CONFIGS\\cowinslots\\appconfig.properties")
+@PropertySource("file:appconfig.properties")
 public class AppConfig {
 
     private static Logger logger = LoggerFactory.getLogger(AppConfig.class);
@@ -32,7 +32,7 @@ public class AppConfig {
 
     @PostConstruct
     public void propsLoaded() {
-        logger.info("Properties Loaded {}", this.toString());
+        logger.info("Properties Loaded {}", this);
     }
 
 }
